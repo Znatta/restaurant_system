@@ -1,13 +1,7 @@
-import express from "express";
-import { Request, Response } from "express";
+import app from "./app";
 require("dotenv").config();
 
-const app = express();
+const port = process.env.PORT;
+const server = app.listen(port);
 
-app.get("/", (req: Request, res: Response) =>
-  res.send("Default route is working.")
-);
-
-app.listen(process.env.PORT, () => {
-  console.log(`Server running in http://localhost:${process.env.PORT}`);
-});
+server.on("listening", () => console.log(`Server running on port ${port}.`));
