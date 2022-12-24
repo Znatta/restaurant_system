@@ -11,7 +11,8 @@ datasource db {
 }
 
 model Table {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  occupied  Boolean  @default(false)
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  description String   @default("")
+  occupied    Boolean  @default(false)
 }
