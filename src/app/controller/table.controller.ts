@@ -26,4 +26,28 @@ export class TableController {
   public async findMany(req: Request, res: Response) {
     res.status(200).send(await tableService.findMany());
   }
+
+  public async reserve(req: Request, res: Response) {
+    const id = req.params.id;
+
+    try {
+      await tableService.reserve(+id);
+      res.status(200).send({ message: "Table reserved successfully!" });
+    } catch (error) {
+      if (error instanceof Error)
+        res.status(400).send({ error: error.message });
+    }
+  }
+
+  public async unreserve(req: Request, res: Response) {
+    const id = req.params.id;
+
+    try {
+      await tableService.unreserve(+id);
+      res.status(200).send({ message: "Table unreserved successfully!" });
+    } catch (error) {
+      if (error instanceof Error)
+        res.status(400).send({ error: error.message });
+    }
+  }
 }

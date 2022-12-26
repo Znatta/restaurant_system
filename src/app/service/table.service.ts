@@ -24,6 +24,20 @@ class TableService {
     return tableReserved;
   }
 
+  public async unreserve(id: number) {
+    const tableToBeUnreserved = await this.findOne(id);
+
+    if (!tableToBeUnreserved.occupied)
+      throw new Error("This table is not occupied");
+
+    const tableUnreserved = await prismaClient.table.update({
+      where: { id },
+      data: { occupied: false }
+    });
+
+    return tableUnreserved;
+  }
+
   public async findOne(id: number) {
     const table = await prismaClient.table.findUnique({ where: { id } });
 
