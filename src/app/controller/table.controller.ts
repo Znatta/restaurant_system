@@ -50,4 +50,18 @@ export class TableController {
         res.status(400).send({ error: error.message });
     }
   }
+
+  public async delete(req: Request, res: Response) {
+    const id = req.params.id;
+
+    try {
+      const deletedTableId = await tableService.delete(+id);
+      res
+        .status(200)
+        .send({ message: `Table ${deletedTableId} deleted successfully!` });
+    } catch (error) {
+      if (error instanceof Error)
+        res.status(400).send({ error: error.message });
+    }
+  }
 }

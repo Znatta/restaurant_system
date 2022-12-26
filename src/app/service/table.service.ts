@@ -50,7 +50,13 @@ class TableService {
     return await prismaClient.table.findMany();
   }
 
-  public async delete(id: number) {}
+  public async delete(id: number) {
+    await this.findOne(id);
+
+    const tableDeleted = await prismaClient.table.delete({ where: { id } });
+
+    return tableDeleted.id;
+  }
 }
 
 export default new TableService();

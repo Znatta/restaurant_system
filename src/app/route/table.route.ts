@@ -9,5 +9,6 @@ renderTableRoute.patch("/reserve/:id", tableController.reserve);
 renderTableRoute.patch("/unreserve/:id", tableController.unreserve);
 renderTableRoute.get("/find/:id", tableController.findOne);
 renderTableRoute.get("/find", tableController.findMany);
+renderTableRoute.delete("/delete/:id", tableController.delete);
 
 export { renderTableRoute };
