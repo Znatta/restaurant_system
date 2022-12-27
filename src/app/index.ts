@@ -1,5 +1,5 @@
 import express from "express";
-import { renderDefaultRoute } from "./route/default.route";
+import { renderTableRoute } from "./route/table.route";
 
 class App {
   public app: express.Application;
@@ -16,7 +16,7 @@ class App {
   }
 
   route() {
-    this.app.use("/", renderDefaultRoute);
+    this.app.use("/api/table", renderTableRoute);
   }
 }
 
