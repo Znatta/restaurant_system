@@ -10,32 +10,32 @@ class TableService {
     return createdTable;
   }
 
-  public async reserve(id: number) {
-    const tableToBeReserved = await this.findOne(id);
+  public async book(id: number) {
+    const tableToBeBooked = await this.findOne(id);
 
-    if (tableToBeReserved.occupied)
+    if (tableToBeBooked.occupied)
       throw new Error("This table is already occupied");
 
-    const tableReserved = await prismaClient.table.update({
+    const tableBooked = await prismaClient.table.update({
       where: { id },
       data: { occupied: true }
     });
 
-    return tableReserved;
+    return tableBooked;
   }
 
-  public async unreserve(id: number) {
-    const tableToBeUnreserved = await this.findOne(id);
+  public async unBook(id: number) {
+    const tableToBeUnbooked = await this.findOne(id);
 
-    if (!tableToBeUnreserved.occupied)
+    if (!tableToBeUnbooked.occupied)
       throw new Error("This table is not occupied");
 
-    const tableUnreserved = await prismaClient.table.update({
+    const tableUnbooked = await prismaClient.table.update({
       where: { id },
       data: { occupied: false }
     });
 
-    return tableUnreserved;
+    return tableUnbooked;
   }
 
   public async findOne(id: number) {

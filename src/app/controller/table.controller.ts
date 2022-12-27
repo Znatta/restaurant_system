@@ -27,24 +27,24 @@ export class TableController {
     res.status(200).send(await tableService.findMany());
   }
 
-  public async reserve(req: Request, res: Response) {
+  public async book(req: Request, res: Response) {
     const id = req.params.id;
 
     try {
-      await tableService.reserve(+id);
-      res.status(200).send({ message: "Table reserved successfully!" });
+      await tableService.book(+id);
+      res.status(200).send({ message: "Table booked successfully!" });
     } catch (error) {
       if (error instanceof Error)
         res.status(400).send({ error: error.message });
     }
   }
 
-  public async unreserve(req: Request, res: Response) {
+  public async unBook(req: Request, res: Response) {
     const id = req.params.id;
 
     try {
-      await tableService.unreserve(+id);
-      res.status(200).send({ message: "Table unreserved successfully!" });
+      await tableService.unBook(+id);
+      res.status(200).send({ message: "Table unbooked successfully!" });
     } catch (error) {
       if (error instanceof Error)
         res.status(400).send({ error: error.message });
