@@ -15,4 +15,44 @@ model Table {
   createdAt   DateTime @default(now())
   description String   @default("")
   occupied    Boolean  @default(false)
+  card        Card     @relation(fields: [cardId], references: [id])
+  cardId      Int      @unique
+}
+
+model Card {
+  id     Int     @id @default(autoincrement())
+  cpf    BigInt?
+  orders Order[]
+  table  Table?
+  total  Float
+}
+
+model Order {
+  id          Int           @id @default(autoincrement())
+  items       Item[]
+  total       Float
+  itemInOrder ItemInOrder[]
+  card        Card?         @relation(fields: [cardId], references: [id])
+  cardId      Int?
+}
+
+model ItemInOrder {
+  order    Order @relation(fields: [orderId], references: [id])
+  orderId  Int
+  item     Item  @relation(fields: [itemId], references: [id])
+  itemId   Int
+  quantity Int
+
+  @@id([orderId, itemId])
+}
+
+model Item {
+  id          Int           @id @default(autoincrement())
+  title       String
+  subtitle    String?
+  description String
+  imageLink   String?
+  price       Float
+  orders      Order[]
+  ItemInOrder ItemInOrder[]
 }
