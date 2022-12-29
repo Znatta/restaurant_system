@@ -21,7 +21,7 @@ model Table {
 
 model Card {
   id     Int     @id @default(autoincrement())
-  cpf    BigInt?
+  cpf    BigInt? @unique
   orders Order[]
   table  Table?
   total  Float
