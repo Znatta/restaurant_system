@@ -3,9 +3,9 @@ import tableService from "../service/table.service";
 
 export class TableController {
   public async create(req: Request, res: Response) {
-    const { description } = req.body;
+    const { description, cardId } = req.body;
 
-    const table = await tableService.create(description);
+    const table = await tableService.create(description, +cardId);
 
     res.status(200).send(table);
   }

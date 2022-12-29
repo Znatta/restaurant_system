@@ -1,4 +1,5 @@
 import express from "express";
+import { renderCardRoute } from "./route/card.route";
 import { renderTableRoute } from "./route/table.route";
 
 class App {
@@ -17,6 +18,7 @@ class App {
 
   route() {
     this.app.use("/api/table", renderTableRoute);
+    this.app.use("/api/card", renderCardRoute);
   }
 }
 
