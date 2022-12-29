@@ -1,4 +1,3 @@
-import { Card } from "@prisma/client";
 import { prismaClient } from "../../database/prismaClient";
 
 class CardService {
@@ -10,9 +9,9 @@ class CardService {
     return createdCard;
   }
 
-  public async updateCPF(card: Card, cpf: number) {
+  public async updateCPF(cardId: number, cpf: number) {
     const updatedCard = await prismaClient.card.update({
-      where: { id: card.id },
+      where: { id: cardId },
       data: { cpf }
     });
 
