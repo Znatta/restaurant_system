@@ -26,26 +26,40 @@ export class CardController {
   public async findOne(req: Request, res: Response) {
     const { id } = req.params;
 
-    const card = await cardService.findOne(+id);
+    try {
+      const card = await cardService.findOne(+id);
 
-    res.status(200).send(card);
+      res.status(200).send(card);
+    } catch (error) {
+      if (error instanceof Error)
+        res.status(400).send({ error: error.message });
+    }
   }
 
   public async findOneByCpf(req: Request, res: Response) {
     const { cpf } = req.params;
 
-    const card = await cardService.findOneByCpf(cpf);
+    try {
+      const card = await cardService.findOneByCpf(cpf);
 
-    res.status(200).send(card);
+      res.status(200).send(card);
+    } catch (error) {
+      if (error instanceof Error)
+        res.status(400).send({ error: error.message });
+    }
   }
 
   public async delete(req: Request, res: Response) {
     const { id } = req.params;
+    try {
+      const deletedTableId = await cardService.delete(+id);
 
-    const deletedTableId = await cardService.delete(+id);
-
-    res
-      .status(200)
-      .send({ message: `Card ${deletedTableId} deleted successfully!` });
+      res.status(200).send({
+        message: `Card ${deletedTableId} deleted successfully!`
+      });
+    } catch (error) {
+      if (error instanceof Error)
+        res.status(400).send({ error: error.message });
+    }
   }
 }

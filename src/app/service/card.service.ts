@@ -10,6 +10,7 @@ class CardService {
   }
 
   public async updateCPF(cardId: number, cpf: string) {
+    await this.findOne(cardId);
     const updatedCard = await prismaClient.card.update({
       where: { id: cardId },
       data: { cpf }
