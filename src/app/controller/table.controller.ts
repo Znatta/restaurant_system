@@ -3,9 +3,9 @@ import tableService from "../service/table.service";
 
 export class TableController {
   public async create(req: Request, res: Response) {
-    const { description, cardId } = req.body;
+    const { description } = req.body;
 
-    const table = await tableService.create(description, +cardId);
+    const table = await tableService.create(description);
 
     res.status(200).send(table);
   }
@@ -28,10 +28,11 @@ export class TableController {
   }
 
   public async book(req: Request, res: Response) {
-    const id = req.params.id;
+    const { id } = req.params;
+    const { cardId } = req.body;
 
     try {
-      await tableService.book(+id);
+      await tableService.book(+id, +cardId);
       res.status(200).send({ message: "Table booked successfully!" });
     } catch (error) {
       if (error instanceof Error)
@@ -40,7 +41,7 @@ export class TableController {
   }
 
   public async unBook(req: Request, res: Response) {
-    const id = req.params.id;
+    const { id } = req.params;
 
     try {
       await tableService.unBook(+id);

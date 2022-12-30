@@ -1,15 +1,15 @@
 import { prismaClient } from "../../database/prismaClient";
 
 class TableService {
-  public async create(description: string, cardId: number) {
+  public async create(description: string) {
     const createdTable = prismaClient.table.create({
-      data: { description, cardId }
+      data: { description }
     });
 
     return createdTable;
   }
 
-  public async book(id: number) {
+  public async book(id: number, cardId: number) {
     const tableToBeBooked = await this.findOne(id);
 
     if (tableToBeBooked.occupied)
@@ -17,7 +17,7 @@ class TableService {
 
     const tableBooked = await prismaClient.table.update({
       where: { id },
-      data: { occupied: true }
+      data: { occupied: true, cardId }
     });
 
     return tableBooked;
@@ -31,7 +31,7 @@ class TableService {
 
     const tableUnbooked = await prismaClient.table.update({
       where: { id },
-      data: { occupied: false }
+      data: { occupied: false, cardId: null }
     });
 
     return tableUnbooked;
