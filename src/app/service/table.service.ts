@@ -1,3 +1,4 @@
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { prismaClient } from "../../database/prismaClient";
 
 class TableService {
@@ -15,12 +16,18 @@ class TableService {
     if (tableToBeBooked.occupied)
       throw new Error("This table is already occupied");
 
-    const tableBooked = await prismaClient.table.update({
-      where: { id },
-      data: { occupied: true, cardId }
-    });
+    try {
+      const tableBooked = await prismaClient.table.update({
+        where: { id },
+        data: { occupied: true, cardId }
+      });
 
-    return tableBooked;
+      return tableBooked;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError)
+        if (error.code === "P2002")
+          throw new Error("Already exist a table with this card");
+    }
   }
 
   public async unBook(id: number) {

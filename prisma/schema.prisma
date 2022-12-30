@@ -15,7 +15,7 @@ model Table {
   createdAt   DateTime @default(now())
   description String   @default("")
   occupied    Boolean  @default(false)
-  card        Card?    @relation(fields: [cardId], references: [id])
+  card        Card?    @relation(fields: [cardId], references: [id], onDelete: SetNull)
   cardId      Int?     @unique
 }
 
@@ -32,14 +32,14 @@ model Order {
   items       Item[]
   total       Float
   itemInOrder ItemInOrder[]
-  card        Card?         @relation(fields: [cardId], references: [id])
+  card        Card?         @relation(fields: [cardId], references: [id], onDelete: Cascade)
   cardId      Int?
 }
 
 model ItemInOrder {
-  order    Order @relation(fields: [orderId], references: [id])
+  order    Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId  Int
-  item     Item  @relation(fields: [itemId], references: [id])
+  item     Item  @relation(fields: [itemId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   itemId   Int
   quantity Int
 
