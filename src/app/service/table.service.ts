@@ -1,10 +1,9 @@
-import { Table } from "@prisma/client";
 import { prismaClient } from "../../database/prismaClient";
 
 class TableService {
-  public async create(description: string): Promise<Table> {
+  public async create(description: string, cardId: number) {
     const createdTable = prismaClient.table.create({
-      data: { description }
+      data: { description, cardId }
     });
 
     return createdTable;

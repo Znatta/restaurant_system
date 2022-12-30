@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `Card` MODIFY `cpf` VARCHAR(191) NULL;

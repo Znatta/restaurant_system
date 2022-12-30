@@ -15,13 +15,13 @@ model Table {
   createdAt   DateTime @default(now())
   description String   @default("")
   occupied    Boolean  @default(false)
-  card        Card     @relation(fields: [cardId], references: [id])
-  cardId      Int      @unique
+  card        Card?    @relation(fields: [cardId], references: [id])
+  cardId      Int?     @unique
 }
 
 model Card {
   id     Int     @id @default(autoincrement())
-  cpf    BigInt?
+  cpf    String? @unique
   orders Order[]
   table  Table?
   total  Float
