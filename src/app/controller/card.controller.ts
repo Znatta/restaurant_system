@@ -12,9 +12,14 @@ export class CardController {
     const { id } = req.params;
     const { cpf } = req.body;
 
-    const updatedCard = await cardService.updateCPF(+id, cpf);
+    try {
+      const updatedCard = await cardService.updateCPF(+id, cpf);
 
-    res.status(200).send(updatedCard);
+      res.status(200).send(updatedCard);
+    } catch (error) {
+      if (error instanceof Error)
+        res.status(400).send({ error: error.message });
+    }
   }
 
   public async findMany(req: Request, res: Response) {
