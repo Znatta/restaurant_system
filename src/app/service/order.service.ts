@@ -21,6 +21,26 @@ class OrderService {
     return await prismaClient.order.findMany();
   }
 
+  public async getItemsInOrder(orderId: number) {
+    // DEBUGGGGGG
+    const itemsInOrder = prismaClient.itemInOrder.findMany({
+      where: { orderId }
+    });
+
+    return itemsInOrder;
+  }
+
+  private async updateTotal(id: number, value: number) {
+    await this.findOne(id);
+
+    const updatedOrder = await prismaClient.order.update({
+      where: { id },
+      data: { total: value }
+    });
+
+    return updatedOrder;
+  }
+
   public async delete(id: number) {
     await this.findOne(id);
 

@@ -22,11 +22,21 @@ export class OrderController {
     res.status(200).send(orders);
   }
 
+  public async getItemsInOrder(req: Request, res: Response) {
+    // ------------------------------- DEBUG -------------------------------
+    const { id } = req.params;
+
+    const items = await orderService.getItemsInOrder(+id);
+
+    res.status(200).send(items);
+  }
+
   public async delete(req: Request, res: Response) {
     const { id } = req.params;
 
     const deletedOrder = await orderService.delete(+id);
-
-    res.status(200).send(deletedOrder);
+    res
+      .status(200)
+      .send({ message: `Order ${deletedOrder} deleted successfully!` });
   }
 }
