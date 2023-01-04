@@ -3,7 +3,9 @@ import orderService from "../service/order.service";
 
 export class OrderController {
   public async create(req: Request, res: Response) {
-    const createdOrder = await orderService.create();
+    const { cardId } = req.body;
+
+    const createdOrder = await orderService.create(cardId);
 
     res.status(200).send(createdOrder);
   }
@@ -22,13 +24,13 @@ export class OrderController {
     res.status(200).send(orders);
   }
 
-  public async getItemsInOrder(req: Request, res: Response) {
-    // ------------------------------- DEBUG -------------------------------
+  public async addItem(req: Request, res: Response) {
     const { id } = req.params;
+    const { itemId, quantity } = req.body;
 
-    const items = await orderService.getItemsInOrder(+id);
+    const itemAdded = await orderService.addItem(+id, +itemId, +quantity);
 
-    res.status(200).send(items);
+    res.status(200).send(itemAdded);
   }
 
   public async delete(req: Request, res: Response) {

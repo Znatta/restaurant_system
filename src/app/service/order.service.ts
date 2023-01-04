@@ -1,9 +1,9 @@
 import { prismaClient } from "../../database/prismaClient";
 
 class OrderService {
-  public async create() {
+  public async create(cardId: number) {
     const createdOrder = await prismaClient.order.create({
-      data: { total: 0 }
+      data: { total: 0, cardId }
     });
 
     return createdOrder;
@@ -21,8 +21,9 @@ class OrderService {
     return await prismaClient.order.findMany();
   }
 
-  public async getItemsInOrder(orderId: number) {
-    // DEBUGGGGGG
+  private async getItemsInOrder(orderId: number) {
+    await this.findOne(orderId);
+
     const itemsInOrder = prismaClient.itemInOrder.findMany({
       where: { orderId }
     });
@@ -30,15 +31,47 @@ class OrderService {
     return itemsInOrder;
   }
 
-  private async updateTotal(id: number, value: number) {
-    await this.findOne(id);
+  private async getTotal(orderId: number) {
+    const itemsInOrder = await this.getItemsInOrder(orderId);
 
-    const updatedOrder = await prismaClient.order.update({
-      where: { id },
-      data: { total: value }
+    const totalOfEachItem = await Promise.all(
+      itemsInOrder.map(async itemInOrder => {
+        const item = await prismaClient.item.findUniqueOrThrow({
+          where: { id: itemInOrder.itemId }
+        });
+
+        return item.price * itemInOrder.quantity;
+      })
+    );
+
+    const total = totalOfEachItem.reduce((accumulator, current) => {
+      return accumulator + current;
+    }, 0);
+
+    return total;
+  }
+
+  public async addItem(orderId: number, itemId: number, quantity: number) {
+    await this.findOne(orderId);
+
+    const itemAdded = await prismaClient.itemInOrder.create({
+      data: { orderId, itemId, quantity }
     });
 
-    return updatedOrder;
+    await this.updateTotal(orderId);
+
+    return itemAdded;
+  }
+
+  private async updateTotal(id: number) {
+    await this.findOne(id);
+
+    const total = await this.getTotal(id);
+
+    await prismaClient.order.update({
+      where: { id },
+      data: { total }
+    });
   }
 
   public async delete(id: number) {

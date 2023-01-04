@@ -8,6 +8,6 @@ renderOrderRoute.post("/create", orderController.create);
 renderOrderRoute.get("/find/:id", orderController.findOne);
 renderOrderRoute.get("/find", orderController.findMany);
 renderOrderRoute.delete("/delete/:id", orderController.delete);
-renderOrderRoute.get("/getItems/:id", orderController.getItemsInOrder);
+renderOrderRoute.post("/addItem/:id", orderController.addItem);
 
 export { renderOrderRoute };
